@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM JS</title>
+</head>
+<body>
+    <h1 id='heading' class="abc">Quang Khai PTIT</h1>
+    <script>
+        var dom_ele = document.getElementById('heading');
+        dom_ele.title='headding';
+        dom_ele.className = 'ptit abcxyz hed'
+        dom_ele.setAttribute('d','abc');
+        // console.log(dom_ele.title);
+        // dom_ele.innerText='Ptit @ 123'
+        dom_ele.innerHTML+='<p>quang khai</p>';
+        dom_ele.innerHTML+=`<h2 class='ptitabc' >ptit</h2>`;
+        console.log(dom_ele.childElementCount);
+        console.log(dom_ele.childNodes);
+        console.log(dom_ele.children[1].classList[0]);
+        console.log(dom_ele.firstElementChild);
+        dom_ele.style.fontFamily='arial';
+        Object.assign(dom_ele.style,{
+            color:'#fff',
+            backgroundColor:'green',
+            fontSize:'19px',
+        });
+        console.log(dom_ele.classList);
+        
+    </script>
+</body>
+</html>

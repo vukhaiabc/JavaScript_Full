@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Function</title>
+</head>
+<body>
+    <script>
+        const student = {
+            first_name : 'Vu Van',
+            last_name : 'Khai',
+            info : function (test) {
+                return test + ' '+ this.first_name + ' ' + this.last_name
+            }
+        }
+        const obj = {
+            first_name :'Son Tung',
+            last_name : 'MTP',
+        }
+
+        console.log(student.info.call(obj,'hello')) //thao tac nay cho phép ta có thể mượn hàm
+        //ham call goi function va thuc thi luon # vs bind
+
+
+        // sử dụng call trong việc kế thừa 
+        function Person(name,age,gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+        }
+
+        function Student(gpa,...args){
+            Person.call(this,...args);
+            this.gpa = gpa;
+        }
+        var stu = new Student(2.6,'Khai',22,'Male')
+        console.log(stu);
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples</title>
+    <style>
+        .box {
+            display: block;
+            
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <input type="text" id="in">
+        <input type="checkbox">
+        <select name="" id="">
+            <!-- value thuong la id -->
+            <option value="1">PHP</option> 
+            <option value="2">Java</option>
+            <option value="3">Python</option>
+            <option value="4">Django</option>
+        </select>
+    </div>
+    
+    <script>
+        var x1 = document.querySelector('input[type="text"]');
+        // x.onchange = function(e){
+        //     console.log(e.target.value);
+        // }
+        x1.onkeypress = function(){
+            this.value = this.value.toUpperCase();
+        }
+        var y = document.querySelector('input[type="checkbox"]');
+        y.onchange = function(e) {
+            console.log(e.target.checked);
+        }
+        var z = document.querySelector('select');
+        z.onchange = function(e) {
+            console.log(e.target.value);
+        }
+    </script>
+
+</body>
+</html>

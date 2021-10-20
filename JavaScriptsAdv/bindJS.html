@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bind JS</title>
+</head>
+<body>
+    <script>
+        this.first_name = 'Quang';
+        this.last_name = 'Khai';
+
+        const student = {
+            first_name : 'Vu Van',
+            last_name : 'Khai',
+            info : function (test) {
+                return test + ' '+ this.first_name + ' ' + this.last_name
+            }
+        }
+        const obj = {
+            first_name :'Son Tung',
+            last_name : 'MTP',
+        }
+        console.log(student.info())
+        var test_stu =  student.info  //chi truy cap vao bo nho cua ham
+        console.log(test_stu('Sinh Viên')) //se lay this cua window
+
+        var student2 = student.info.bind(obj,'Hello') // tu khoa this bay gio la doi tuong obj, và student2 là vùng nhớ mới đc tạo ra
+        // phuong thuc bind có thể truyền tham số bắt đầu từ vị trí số 2.
+        console.log(student2())
+
+    </script>
+</body>
+</html>

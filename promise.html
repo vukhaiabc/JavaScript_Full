@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise JS</title>
+</head>
+<body>
+    <h1>Quang Khải</h1>
+    <script>
+        var promise = new Promise(
+            //executor :
+            function(resolve,reject){
+                //logic xử lí ,  phai goi 1 trong 2 thang tren
+                // thanh công : resolve, that bai : reject
+                
+                resolve({id:1,name:"quang khai"});
+                // reject('loi roi');
+            }
+        );
+        promise.then((obj)=>{
+            console.log(obj);
+            return 1;
+        })
+        .then( (data)=> {
+            console.log(data);
+        })
+        .catch( (error_str)=>{
+            console.log(error_str);
+        })
+        .finally(()=>{
+            console.log('done!');
+        })
+    </script>
+</body>
+</html>

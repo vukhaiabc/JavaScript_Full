@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Back</title>
+</head>
+<body>
+    <script>
+        Array.prototype.map2 = function (callback) {
+            results = [];
+            for (let index = 0; index < this.length; index++) {
+               var rs = callback(this[index],index);
+               results.push(rs);
+            }
+            return results;
+        }
+        courses = ['PHP','JavaScrip','Python'];
+        var kq = courses.map2( (course,i)=> {
+            return i + " : " + course;
+        });
+        console.log(kq);
+        
+    </script>
+</body>
+</html>

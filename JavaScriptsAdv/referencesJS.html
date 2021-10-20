@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Js references</title>
+</head>
+<body>
+    <script>
+        obj = {
+            name : 'Quang Khai',
+            age : 22
+        }
+        function edit(obj) {
+            // cach 1 : 
+            // o = JSON.parse(JSON.stringify(obj)) 
+            // cach 2 : 
+            o = Object.assign({},obj);
+            o.name = 'Vu Van Khai'
+            return o
+        }
+        o = edit(obj)
+        console.log(obj.name)
+        console.log(o.name)
+        console.log(obj === o)
+
+        
+    </script>
+</body>
+</html>

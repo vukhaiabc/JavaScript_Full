@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prevent Default</title>
+    <style>
+        ul {
+            display: none;
+        }
+        input:focus {
+            color: red;
+        }
+        input:focus ~ ul{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        abc
+        <a href="http://quantrimang.com">Quản trị mạng</a>
+        <br>
+        <a href="http://khoahoc.tv">Khoa Học </a>
+    </div>
+    <input type="text" placeholder="tìm kiếm">
+    <ul>
+        <li>js</li>
+        <li>java</li>
+        <li>php</li>
+    </ul>
+
+    <script>
+        var taglink = document.links;
+        for (const ele of taglink) {
+            ele.onclick = function(e){
+                e.stopPropagation();
+                e.preventDefault(); // ngan chan hanh vi mac dinh cua tinh duyet
+                console.log(e.target);
+            }
+        }
+
+        // ngan chan hanh dong noi bot 
+        var box = document.querySelector('.box');
+        console.log(box)
+        box.onclick = function(e) {
+            
+            console.log(e.target);
+        }
+
+        var ul_ele = document.querySelector('ul');
+        console.log(ul_ele)
+        ul_ele.onmousedown = function(e){
+            e.preventDefault();
+        }
+        ul_ele.onclick = function(e){
+            console.log(e.target.innerText)
+        }
+    </script>
+</body>
+</html>

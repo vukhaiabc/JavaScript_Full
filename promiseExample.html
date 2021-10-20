@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Example</title>
+</head>
+<body>
+    <ul id="users_comment">
+        
+    </ul>
+    <script>
+        var users = [
+            {
+                id : 1,
+                name : "Quang Khai"
+            },
+            {
+                id : 2,
+                name : "Son Dang"
+            },
+            {
+                id : 3,
+                name : "Ptit"
+            }
+        ];
+        var comments = [
+            {
+                id : 2,
+                id_user : 1,
+                content : "Anh dạy dễ hiểu quá ! thanks Anh... good job"
+            },
+            {
+                id : 1,
+                id_user : 2,
+                content : "Cảm ơn em !"
+            },
+            {
+                id : 3,
+                id_user : 3,
+                content : "hay Quas!"
+            }
+        ];
+        function getComments() {
+            return new Promise((resolve)=>{
+                setTimeout(()=> {
+                    resolve(comments);
+                },1000)
+            })
+        }
+        function getUsersById(userIds) {
+            return new Promise((resolve)=>{
+                users_comment = users.filter( (user)=>{
+                    return userIds.includes(user.id);
+                })
+                setTimeout(()=> {
+                    resolve(users_comment);
+                },1000)
+            })
+        }
+        getComments()
+        .then((data)=> {
+            var userIds = data.map((item)=> {
+                return item.id_user;
+            });
+            return getUsersById(userIds)
+                .then( (users_comment)=> {
+                    console.log(users_comment);
+                    return {
+                        users : users_comment,
+                        comments : comments
+                    };
+                })
+        })
+        .then ( (data)=> {
+            var ul_ele = document.getElementById('users_comment');
+            html ='';
+            data.comments.forEach( (comment)=> {
+                var user = data.users.find((item)=> {
+                    return item.id === comment.id_user;
+                })
+                html+= `<li>${user.name} : ${comment.content}</li>`;
+            })
+            ul_ele.innerHTML = html;
+        });
+
+    </script>
+</body>
+</html>

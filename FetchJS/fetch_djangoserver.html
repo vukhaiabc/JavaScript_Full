@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch vs Django Server</title>
+    <style>
+        .container {
+            display: flex;
+            
+        }
+        a {
+            text-decoration: none;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        ul {
+            list-style: none;
+            margin-top : 0;
+        }
+        ul li {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+        .action {
+            margin-bottom: 20px;
+        }
+        input {
+            height: 32px;
+            font-size: 20px;
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+        select {
+            padding: 6px 8px;
+            border: 3px solid green;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        option {
+            font-weight: bold;
+        }
+        .right .form {
+            padding-left: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul class="listcourse">
+        
+        </ul>
+        <div class="right">
+            <h2 class="title-lesson"></h2>
+            <ul class="lesson">
+
+            </ul>
+            <hr>
+            <div class="form">
+                <h2 class="title-course">Thêm Khoá Học</h2>
+                <input type="text" name="name_course" value="" placeholder="Tên khoá học">
+                <br>
+                <br>
+                <label for="">Danh Mục : </label>
+                <select name="select-category" id="">
+                    <option value=""></option>
+                </select>
+                <br>
+                <br>
+                <button class="create" style="background-color: palegreen;border-radius: 5px; height: 40px;" onclick="addCourse()">Thêm Khoá Học</button> 
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        var list_course;
+        function getCourses(coursesApi){
+            fetch(coursesApi)
+            .then(res => res.json())
+            .then((data) => {
+                list_course = data.results;
+                html = ''
+                data.results.forEach(value => {
+                    html+= `<li><a href="">${value.id} -- ${value.name}</a></li>
+                    <div class="action">
+                        <button style="background-color: rgb(71, 172, 115);" onclick = "displayLesson(${value.id})">Xem Bài Học</button>
+                        <button style="background-color:rgb(224, 99, 54);" onclick = "handleUpdateCourse(${value.id})">Sửa Khoá Học</button>
+                        <button style="background-color: rgb(235, 61, 61) ;" onclick = "deleteCourse(${value.id})">Xoá Khoá Học </button>  
+                    </div>     
+                    `
+                });
+                ul_ele = document.querySelector('.listcourse');
+                ul_ele.innerHTML += html;
+            })
+        }
+        
+        function getCategory(categoryApi){
+            fetch(categoryApi)
+            .then(res => res.json())
+            .then((data) => {
+                html = ''
+                data.forEach(value => {
+                    html += `<option value=${value.id}>${value.name}</option>`
+                });
+                
+                select_ele = document.querySelector("select[name='select-category']");
+                select_ele.innerHTML = html;
+            })
+        }
+        var coursesApi = 'http://127.0.0.1:8000/api/courses/'
+        var categoryApi = 'http://127.0.0.1:8000/api/category/'
+        function start(){
+            getCourses(coursesApi)
+            getCategory(categoryApi)
+        }
+        start()
+
+        function addCourse() {
+            var name_course = document.querySelector('input[name="name_course"]').value;
+            var category_id = document.querySelector("select[name='select-category']").value;
+            if(name_course != '' && category_id != ''){
+                data = {
+                    "name" : name_course,
+                    "category" : category_id
+                }
+                fetch(coursesApi,{
+                    method : 'POST',
+                    headers :{
+                        'Content-Type': 'application/json'
+                    },
+                    body : JSON.stringify(data),
+                }).then (res => res.json())
+                .then((data)=>{
+                    alert('Thêm thành công '+ data.name);
+                    location.reload();
+                })
+                .catch(err => console.error(err))
+            }       
+        }
+        function getLessonByIdCourse(id,callback){
+            apiLesson = `http://127.0.0.1:8000/api/courses/${id}/lessons/`
+            fetch(apiLesson)
+            .then(res => res.json())
+            .then(callback)     
+        }
+        function displayLesson(id_course){
+            var title_lesson = document.querySelector('.title-lesson')
+            var course = list_course.find((course)=>{
+                return id_course == course.id;
+            })
+            title_lesson.innerHTML = `Danh Sách Bài Học của Khoá:${course.name}`
+            getLessonByIdCourse(id_course,renderLessonHtml);
+        }
+        function renderLessonHtml(data) {
+            
+            html = ''
+            data.forEach(value => {
+                html+= `<li><a href="">${value.id} -- ${value.name}</a></li>`
+            });                
+            var list_lesson = document.querySelector('ul.lesson')
+            list_lesson.innerHTML = html;
+            
+        }
+        var form_ele = document.querySelector('.right .form');
+
+        function handleUpdateCourse(id_course){
+            getCourseById(id_course,renderToForm)
+            updateCourse(id_course);
+        }
+        function getCourseById(id_course,callback){
+            var apiCourse = `http://127.0.0.1:8000/api/courses/${id_course}/`;
+            fetch(apiCourse)
+            .then(res => res.json())
+            .then(callback)
+        }
+        function renderToForm(data) {
+            
+            form_ele.querySelector('.title-course').innerHTML = 'Update Khoá Học';
+            var name_course = form_ele.querySelector('input[name="name_course"]');
+            var category = form_ele.querySelector("select[name='select-category']");
+            var btn_create = form_ele.querySelector('.create');
+            name_course.value = data.name;
+            category.value = data.category;
+            btn_create.innerText = 'Cập Nhật';
+        }
+        function updateCourse(id_course){
+            var btn_create = form_ele.querySelector('.create');
+            
+
+            btn_create.onclick = ()=>{
+                var apiCourse = `http://127.0.0.1:8000/api/courses/${id_course}/`;
+                var name_course = form_ele.querySelector('input[name="name_course"]').value;
+                var category_id = form_ele.querySelector("select[name='select-category']").value;
+                data = {
+                    name : name_course,
+                    category : category_id
+                }
+                fetch(apiCourse,{
+                    method : 'PUT',
+                    headers :{
+                        'Content-Type': 'application/json'
+                    },
+                    body : JSON.stringify(data),
+                }).then (res => res.json())
+                .then((data)=>{
+                    alert('Cập Nhật Thành Công');
+                    console.log(data);
+                })
+                .catch(err => console.error(err))
+
+            }
+        }
+        function deleteCourse(id_course){
+            if (confirm("Bạn Có Chắc muốn xoá hay không")) {
+                var apiCourse = `http://127.0.0.1:8000/api/courses/${id_course}/`;
+                options = {
+                    method: 'DELETE',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                }
+                fetch(apiCourse,options)
+                .then( (response)=> {
+                    location.reload();
+                })
+            }
+            
+        }
+    </script>
+</body>
+</html>
